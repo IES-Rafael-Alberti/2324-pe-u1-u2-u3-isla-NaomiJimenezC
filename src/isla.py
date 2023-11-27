@@ -287,11 +287,12 @@ def simbolo_celda(celda):
         return CELDA_VACIA 
 
 
-def imprimir_mapa_oculto(mapa: list):
+def imprimir_mapa_oculto(mapa: list,posicion_actual:tuple):
     """Imprime el mapa sin revelar el tesoro ni las trampas."""
     for numero_columna in range(1,6):
         print(" ",str(numero_columna),end="")
     print()
+    #donde sea la posicion_actual se ponga un punto
     for numero_fila,fila in enumerate(mapa):
         print(numero_fila+1 ,"  ".join([simbolo_celda(celda) for celda in fila]))
 
