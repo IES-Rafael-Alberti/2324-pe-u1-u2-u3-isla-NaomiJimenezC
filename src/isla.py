@@ -210,16 +210,15 @@ def pedir_movimiento(mapa: list) -> str:
     """
     entrada_correcta = False
 
-    entrada = int(input("Ingresa tu movimiento (formato: 'u:arriba', 'd:abajo', 'l:izquierda', 'r:derecha', q:salir): "))
+    entrada = input("Ingresa tu movimiento (formato: 'u:arriba', 'd:abajo', 'l:izquierda', 'r:derecha', q:salir): ")
     while not entrada_correcta:
         if entrada in MOVIMIENTOS:
             entrada_correcta = True
         elif entrada == CODIGO_OCULTO_PROGRAMADOR:
             imprimir_mapa(mapa)
-
+            entrada_correcta = True
         if not entrada_correcta:
-            entrada = int(input(
-                "Ingresa tu movimiento (formato: 'u:arriba', 'd:abajo', 'l:izquierda', 'r:derecha', q:salir): "))
+            entrada = input("Ingresa tu movimiento (formato: 'u:arriba', 'd:abajo', 'l:izquierda', 'r:derecha', q:salir): ")
 
     return entrada
 
@@ -339,4 +338,5 @@ def jugar():
 
 if __name__ == "__main__":
     mapa = generar_mapa()
-    imprimir_mapa(mapa)
+    movimiento = pedir_movimiento(mapa)
+    print(movimiento)
