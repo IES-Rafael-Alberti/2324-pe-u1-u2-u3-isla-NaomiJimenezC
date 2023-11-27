@@ -74,6 +74,7 @@ Tu posición es (3, 3)  #aunque internamente esté en la posición (2, 2)
 """
 
 import random
+import os
 
 DIMENSIONES = 5
 
@@ -122,6 +123,17 @@ def inicializar_juego() -> tuple:
 
     return mapa, posicion_jugador
 
+def clear():
+    """
+    Limpia la terminal dependiendo de tu sistema operativo
+    :return:
+    """
+    if os.name == "nt":
+        os.system("cls")
+    else:
+        os.system("clear")
+
+clear()
 
 def posicion_inicial_del_jugador() -> tuple:
     """ Devuelve la posición inicial del jugador. Actualmente es la posición central del mapa.
@@ -338,14 +350,16 @@ def jugar():
         # Obtener la nueva posición del jugador y procesar el movimiento
         nueva_posicion = obtener_nueva_posicion(posicion_jugador,movimiento)
         resultado_movimiento = procesar_movimiento(nueva_posicion, mapa)
-        muestra_resultado_del_movimiento(resultado_movimiento, nueva_posicion, mapa)
+
 
         if resultado_movimiento != TESORO_ENCONTRADO:
             # Actualizar la posición del jugador si el movimiento es válido
             if resultado_movimiento not in MOVIMIENTOS_NO_PERMITIDO:
                 posicion_jugador = nueva_posicion
-            muestra_estado_mapa(mapa, posicion_jugador)
+            clear()
             muestra_resultado_del_movimiento(resultado_movimiento, nueva_posicion, mapa)
+            muestra_estado_mapa(mapa, posicion_jugador)
+
 
             movimiento = pedir_movimiento(mapa)
 
