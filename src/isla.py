@@ -219,7 +219,7 @@ def pedir_movimiento(mapa: list) -> str:
         if not entrada_correcta:
             entrada = input("Ingresa tu movimiento (formato: 'u:arriba', 'd:abajo', 'l:izquierda', 'r:derecha', q:salir): ")
 
-    return entrada
+    return entrada.lower()
 
 
 def obtener_nueva_posicion(posicion_jugador: tuple, movimiento: str) -> tuple:
@@ -245,14 +245,17 @@ def procesar_movimiento(posicion: tuple, mapa: list) -> int:
     """
 
     resultado = VACIA_ENCONTRADA
-    if not 0 <= posicion[FILAS] < DIMENSIONES and 0 <= posicion[COLUMNAS] < DIMENSIONES:
-        resultado = MOVIMIENTO_INVALIDO  # Código de error para movimiento fuera de rango
-    elif mapa[posicion[FILAS]][posicion[COLUMNAS]] == CELDA_TESORO:
-        resultado = TESORO_ENCONTRADO  # Código para tesoro encontrado
-    elif mapa[posicion[FILAS]][posicion[COLUMNAS]] == CELDA_TRAMPA:
-        resultado = TRAMPA_ENCONTRADA  # Código para trampa encontrada
-    elif mapa[posicion[FILAS]][posicion[COLUMNAS]] != CELDA_VACIA:
-        resultado = PISTA_ENCONTRADA  # Código para pista encontrada
+    try:
+        if  0 > posicion[FILAS]  and posicion[FILAS] >  DIMENSIONES and 0 > posicion[COLUMNAS] and posicion[COLUMNAS] > DIMENSIONES:
+            resultado = MOVIMIENTO_INVALIDO  # Código de error para movimiento fuera de rango
+        elif mapa[posicion[FILAS]][posicion[COLUMNAS]] == CELDA_TESORO:
+            resultado = TESORO_ENCONTRADO  # Código para tesoro encontrado
+        elif mapa[posicion[FILAS]][posicion[COLUMNAS]] == CELDA_TRAMPA:
+            resultado = TRAMPA_ENCONTRADA  # Código para trampa encontrada
+        elif mapa[posicion[FILAS]][posicion[COLUMNAS]] != CELDA_VACIA:
+            resultado = PISTA_ENCONTRADA  # Código para pista encontrada
+    except:
+        resultado = MOVIMIENTO_INVALIDO
 
     return resultado
 
@@ -267,8 +270,11 @@ def simbolo_celda(celda):
 
 def imprimir_mapa_oculto(mapa: list):
     """Imprime el mapa sin revelar el tesoro ni las trampas."""
-    for fila in mapa:
-        print(" ".join([simbolo_celda(celda) for celda in fila]))
+    for numero_columna in range(1,6):
+        print(" ",str(numero_columna),end="")
+    print()
+    for numero_fila,fila in enumerate(mapa):
+        print(numero_fila+1 ,"  ".join([simbolo_celda(celda) for celda in fila]))
 
 
 def imprimir_mapa(mapa: list):
@@ -276,6 +282,7 @@ def imprimir_mapa(mapa: list):
     Imprime el mapa.
     :param mapa: El mapa a imprimir.
     """
+
     for fila in mapa:
         for columna in fila:
             print(columna, end= " ")
@@ -318,7 +325,7 @@ def jugar():
     movimiento = pedir_movimiento(mapa)
     resultado_movimiento = None
     # Loop principal del juego. El juego termina cuando el jugador realizar movimiento SALIR.
-    while movimiento != SALIR and resultado_movimiento == TESORO_ENCONTRADO:
+    while movimiento != SALIR and resultado_movimiento != TESORO_ENCONTRADO:
 
         # Obtener la nueva posición del jugador y procesar el movimiento
         nueva_posicion = obtener_nueva_posicion(posicion_jugador,movimiento)
